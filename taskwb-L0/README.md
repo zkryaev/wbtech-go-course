@@ -6,3 +6,8 @@ script: `для генерации заказов. используется в p
 models: `структуры`</br>
 repository: `работа с бд`</br>
 controller: `ручка получения заказа`</br>
+
+---
+
+Фидбек:
+![image](https://github.com/user-attachments/assets/481e5eb6-6bad-42de-a3c2-a75ea8cbc7fe)
