@@ -1,5 +1,11 @@
 package main
 
+import (
+	"errors"
+	"strconv"
+	"unicode"
+)
+
 /*
 === Задача на распаковку ===
 
@@ -17,6 +23,33 @@ package main
 
 Функция должна проходить все тесты. Код должен проходить проверки go vet и golint.
 */
+
+func UnpackString(input string) (string, error) {
+	if len(input) == 0 {
+		return "", nil
+	}
+	last := '0'
+	stack := make([]rune, 0, 1)
+	for _, r := range input {
+		if unicode.IsDigit(r) {
+			if last == '0' {
+				return "", errors.New("Incorrect string")
+			}
+			num, _ := strconv.Atoi(string(r))
+			for num-1 > 0 {
+				stack = append(stack, last)
+				num--
+			}
+			last = '0'
+			continue
+		} else {
+			stack = append(stack, r)
+			last = r
+			continue
+		}
+	}
+	return string(stack), nil
+}
 
 func main() {
 

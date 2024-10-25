@@ -19,6 +19,58 @@ package main
 Программа должна проходить все тесты. Код должен проходить проверки go vet и golint.
 */
 
-func main() {
+import (
+	"fmt"
+	"sort"
+	"strings"
+)
 
+func main() {
+	words := []string{"пятак", "пятка", "тяпка", "листок", "слиток", "столик"}
+	anagrams := findAnagramSets(&words)
+
+	for key, group := range *anagrams {
+		fmt.Printf("%s: %v\n", key, group)
+	}
+}
+
+func findAnagramSets(words *[]string) *map[string][]string {
+	anagramMap := make(map[string][]string)
+
+	for _, word := range *words {
+		wordLower := strings.ToLower(word)
+		sortedWord := sortString(wordLower)
+		anagramMap[sortedWord] = append(anagramMap[sortedWord], wordLower)
+	}
+
+	result := make(map[string][]string)
+	for _, group := range anagramMap {
+		if len(group) > 1 {
+			group = uniqueAndSort(group)
+			result[group[0]] = group
+		}
+	}
+
+	return &result
+}
+
+func sortString(word string) string {
+	chars := strings.Split(word, "")
+	sort.Strings(chars)
+	return strings.Join(chars, "")
+}
+
+func uniqueAndSort(words []string) []string {
+	wordSet := make(map[string]struct{})
+	for _, word := range words {
+		wordSet[word] = struct{}{}
+	}
+
+	uniqueWords := make([]string, 0, len(wordSet))
+	for word := range wordSet {
+		uniqueWords = append(uniqueWords, word)
+	}
+
+	sort.Strings(uniqueWords)
+	return uniqueWords
 }
